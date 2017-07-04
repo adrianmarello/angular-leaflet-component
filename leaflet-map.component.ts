@@ -27,7 +27,9 @@ export class LeafletMapComponent implements AfterViewInit {
     destRouteLatLng: any;
     destRouteLatLngGlobal: any;
 
-    constructor() {}
+    constructor() {
+        this.layers = [];
+    }
 
     ngAfterViewInit() {
         this.initMap();
@@ -50,15 +52,51 @@ export class LeafletMapComponent implements AfterViewInit {
         });
     }
 
+    // MAP METHODS
+
     resizeMap(): void {
-    
+        this.map.resize()
     }
 
-    setCenter(latitude: number = this.latitude, longitude: number = this.longitude): void {
-        
-    }
+    setCenter(latitude: number = this.latitude, longitude: number = this.longitude): void {}
 
     setBounds(layer: any, route:boolean=false): void {}
+    
+    setHeightMap(height: number): void {
+        this.height_map = height;
+    }
+
+
+    // LAYER METHODS
+
+    createLayer(layer: string) {
+        this.layers[layer] = L.geoJSON().addTo(this.map);
+    }
+
+    removeLayer(layer: string) {
+        this.map.removeLayer(this.layers[layer]);
+    }
+
+    addGeoJson(layer: string, json: any) {
+        this.layers[layer].addData(json);
+    }
+
+    removeFeature(layer: string, feature: any) {
+        this.layers[layer].eachLayer(_layer =>{
+            if(_layer.feature.properties.id == feature.properties.id) {
+                this.layers[layer].removeLayer(_layer._leaflet_id);
+            }
+        });
+    }
+
+    setIcons(layer: string, icon: any) {
+        this.layers[layer].eachLayer(function(layer){
+            layer.setIcon(layer.options.icon = icon);
+        });
+    }
+
+
+    // ROUTE METHODS
 
     prepareRoute(layer: string){}
 
@@ -66,31 +104,12 @@ export class LeafletMapComponent implements AfterViewInit {
 
     removeRoute(){}
 
+
+    // MARKER METHODS
+
     setMarkerOnClick(layer:string){}
-
-    setHeightMap(height: number): void {
-        this.height_map = height;
-    }
-
-    createLayer(layer: string){
-        this.layers[layer] = L.geoJSON().addTo(this.map);
-    }
-
-    hiddenLayer(layer?: string) {}
-
-    addGeoJson(layer: string, json: any){
-        this.layers[layer].addData(json);
-    }
-
+    
     addOnClick(layer: string){}
-
-    removeFeatureByPk(layer: string, feature: any) {}
-
-    setIcons(layer: string, icon: any){
-        this.layers[layer].eachLayer(function(layer){
-            layer.setIcon(layer.options.icon = icon);
-        });
-    }
 
     setLabel(layer: string){}
 
