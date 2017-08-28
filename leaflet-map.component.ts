@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Input, ElementRef, AfterViewInit } from '@angular/core';
 
 import * as L from 'leaflet';
 
@@ -36,8 +36,8 @@ export class LeafletMapComponent implements AfterViewInit {
     }
 
     initMap() {
-        let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoicGF0cmlja3IiLCJhIjoiY2l2aW9lcXlvMDFqdTJvbGI2eXUwc2VjYSJ9.trTzsdDXD2lMJpTfCVsVuA');
-        let satellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoicGF0cmlja3IiLCJhIjoiY2l2aW9lcXlvMDFqdTJvbGI2eXUwc2VjYSJ9.trTzsdDXD2lMJpTfCVsVuA');
+        let streets = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+        let satellite = L.tileLayer('https://api.mapbox.com/styles/v1/marello/cj6qgzbte3h9e2rrqiq5pyabu/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFyZWxsbyIsImEiOiJjajZxZ3lkOWowOTNjMnFycHFjamIxN2ZxIn0.nckB8pwG_yOJGQXBU0KOZA');
         var baseMaps = {
             "Satellite": satellite,
             "Streets": streets
@@ -48,8 +48,9 @@ export class LeafletMapComponent implements AfterViewInit {
             center: [this.latitude, this.longitude],
             zoom: this.zoom,
             scrollWheelZoom: false,
-            layers: [streets]
+            layers: [satellite, streets]
         });
+       
     }
 
     // MAP METHODS
